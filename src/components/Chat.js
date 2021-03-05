@@ -7,7 +7,7 @@ import { selectRoomId } from '../features/appSlice'
 import ChatInput from './ChatInput'
 
 function Chat() {
-    const roomId = useSelector(selectRoomId);
+    // const roomId = useSelector(selectRoomId);
     
     return (
         <ChatContainer>
@@ -31,7 +31,7 @@ function Chat() {
 
                 <ChatInput 
                     // ChannelName
-                    channelId={roomId}
+                    // channelId={roomId}
                 />
 
             </>
