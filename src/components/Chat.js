@@ -5,16 +5,27 @@ import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 import { useSelector } from 'react-redux'
 import { selectRoomId } from '../features/appSlice'
 import ChatInput from './ChatInput'
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore'
+import { db } from '../firebase'; 
+import Message from './Message'
 
 function Chat() {
-    // const roomId = useSelector(selectRoomId);
+    const roomId = useSelector(selectRoomId);
+    const [roomDetails]  = useDocument(
+        roomId && db.collection('rooms').doc(roomId)
+    );
+
+    const [roomMessage] = useCollection(
+        roomId &&
+        db.collection('rooms').doc(roomId).collection('messages').orderBy('timestamp', 'asc')
+        );
     
     return (
         <ChatContainer>
             <>
                 <Header>
                     <HeaderLeft>
-                        <h4><strong>#Room-name</strong></h4>
+                        <h4><strong>#{roomDetails?.data().name}</strong></h4>
                         <StarBorderOutlinedIcon />
                     </HeaderLeft>
 
@@ -26,12 +37,25 @@ function Chat() {
                 </Header>
 
                 <ChatMessages>
-                    {/* List out all the messeges */}
+                    {roomMessage?.docs.map(doc => {
+                        const { message, timestamp, user, userImage }= doc.data();
+
+                        return (
+                            <Message
+                             key={doc.id}
+                             message={message}
+                             timestamp={timestamp}
+                             user={user}
+                             userImage={userImage}
+                             />
+                        );
+                    })}
                 </ChatMessages>
 
                 <ChatInput 
-                    // ChannelName
-                    // channelId={roomId}
+                    channelName={roomDetails?.data().name}
+                    channelId={roomId}    
+                                 
                 />
 
             </>
