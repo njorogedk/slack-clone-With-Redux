@@ -63,6 +63,14 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/ad
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
 
+#### Firebase
+firebase login
+firebase init - select hosting then existing project select your project.
+public directory will be build
+yarn build
+
+firebase deploy
+
 ### `yarn build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

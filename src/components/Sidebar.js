@@ -14,18 +14,21 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 import SidebarOption from './SidebarOption';
 import { useCollection } from 'react-firebase-hooks/firestore'
-import { db } from '../firebase'
+import { db, auth } from '../firebase'
+import { useAuthState } from 'react-firebase-hooks/auth'
 
 function Sidebar() {
-    const [channels, loading, error] = useCollection(db.collection('rooms'));
+    const [channels] = useCollection(db.collection('rooms'));
+    const [user] = useAuthState(auth);
+
     return (
         <SidebarContainer>
             <SidebarHeader>
                 <SidebarInfo>
-                    <h2>Code Cracking</h2>
+                    <h2>Crack Coding</h2>
                     <h3>
                         <FiberManualRecordIcon />
-                        Dickson Njoroge
+                        {user.displayName}
                     </h3>
                 </SidebarInfo>
                 <CreateIcon />
@@ -45,7 +48,10 @@ function Sidebar() {
             <SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
 
             {channels?.docs.map(doc =>
-                <SidebarOption key={doc.id} title={doc.data().name} />
+                <SidebarOption 
+                    key={doc.id} 
+                    id={doc.id} 
+                    title={doc.data().name} /> //the key help to avoid rendering everything but only the changed item.
                 )}
         </SidebarContainer>
     )
